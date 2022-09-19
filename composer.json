@@ -1,0 +1,14 @@
+{
+    "name": "ersenkaya/product-feeder",
+    "autoload": {
+        "psr-4": {
+            "ProductFeeder\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "kayaersen",
+            "email": "kareller.ek@gmail.com"
+        }
+    ]
+}
