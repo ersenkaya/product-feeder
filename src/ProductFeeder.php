@@ -4,6 +4,8 @@ namespace ProductFeeder;
 
 use ProductFeeder\Factory\OutputFactory;
 use ProductFeeder\Factory\PlatformFactory;
+use ProductFeeder\Factory\FileExporterFactory\FileExporterFactory;
+use ProductFeeder\Type\FileType;
 
 class ProductFeeder
 {
@@ -13,30 +15,46 @@ class ProductFeeder
     /** @var OutputFactory */
     private $outputFactory;
 
+    private $types = ['xml', 'json'];
+
     public function __construct()
     {
         $this->platformFactory = new PlatformFactory();
         $this->outputFactory = new OutputFactory();
     }
 
+    /**
+     * @throws \Exception
+     */
     public function response(array $items, $platformTitle = null, $output = 'json')
     {
-        if(!$platformTitle) {
+        if (!$platformTitle) {
             throw new \Exception("Platform is not specify, you can use google, facebook or cimri");
         }
 
-        $platformTitle = ucfirst(strtolower($platformTitle));
+        $normalized = PlatformFactory::instance($platformTitle)->normalize($items);
 
-        if(!class_exists("ProductFeeder\\Adapter\\PlatformAdapter\\$platformTitle")) {
-            throw new \Exception("Platform class not found");
+        return OutputFactory::instance($output)->render($normalized);
+
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function exportFile($content, $provider = 'google', $output = 'xml'): string
+    {
+        if (!in_array($output, $this->types)) {
+            throw new \Exception('Type is not specify! Please just use: xml or json');
         }
 
-        $platform = $this->platformFactory->provide($platformTitle);
-        $platform->normalize($items);
-        $normalized = $platform->getItems();
+        $fileType = FileType::JSON;
 
-        $type = $this->outputFactory->output($output);
+        if($output === 'xml') {
+            $content = $content->asXML();
+            $fileType = FileType::XML;
+        }
 
-        return $type->render($normalized);
+        return FileExporterFactory::instance($fileType)->export($provider, $content);
+
     }
 }

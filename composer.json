@@ -1,5 +1,7 @@
 {
     "name": "ersenkaya/product-feeder",
+    "type": "project",
+    "require": {},
     "autoload": {
         "psr-4": {
             "ProductFeeder\\": "src/"

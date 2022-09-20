@@ -11,6 +11,9 @@ class Xml implements IOutput
     {
         $xml = new SimpleXMLElement("<products/>");
         $this->handle($xml, $data);
+
+        $xml = $xml->asXML();
+
         return $xml;
 
     }

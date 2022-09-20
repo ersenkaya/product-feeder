@@ -47,14 +47,6 @@ class Product
     }
 
     /**
-     * @param string $name
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
-
-    /**
      * @return float
      */
     public function getPrice()
@@ -63,27 +55,11 @@ class Product
     }
 
     /**
-     * @param float $price
-     */
-    public function setPrice($price)
-    {
-        $this->price = $price;
-    }
-
-    /**
      * @return string
      */
     public function getCategory()
     {
         return $this->category;
-    }
-
-    /**
-     * @param string $category
-     */
-    public function setCategory($category)
-    {
-        $this->category = $category;
     }
 
 }

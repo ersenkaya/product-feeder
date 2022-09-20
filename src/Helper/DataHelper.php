@@ -2,15 +2,18 @@
 
 namespace ProductFeeder\Helper;
 
+use ProductFeeder\Entity\Product;
+use ProductFeeder\ProductFeeder;
+
 class DataHelper
 {
 
-    public function fileWalker($path)
+    public function readFile($path)
     {
         $data = "";
 
         if (!file_exists($path)) {
-            die('File not found! Please check.');
+            die("File not found! Please check. $path");
         }
 
         $file = fopen($path, 'r') or die('Unable to open file!');
@@ -25,19 +28,39 @@ class DataHelper
 
     }
 
-    public function createFile($data, $ext, $provider)
+    /**
+     * @throws \Exception
+     */
+    public function exportFile($path, $platform, $output): string
     {
-        $path = "Feeds/$provider/";
+        $data = self::readFile($path);
 
-        if (!is_dir($path)) mkdir($path, 0777, true);
+        $items = array();
 
-        $fileName = "$provider-feed.$ext";
+        foreach ($data as $item) {
+            $items[] = new Product($item->id, $item->name, $item->price, $item->category);
+        }
 
-        $file = fopen("$path$fileName", 'w');
-        fwrite($file, $data);
-        fclose($file);
+        $feeder = new ProductFeeder();
 
-        echo "File is created! Please check $path$fileName";
+        $response = $feeder->response($items, $platform, $output);
+
+        return $feeder->exportFile($response, $platform, $output);
 
     }
+
+    public function getItems($path): array
+    {
+        $data = self::readFile($path);
+
+        $items = array();
+
+        foreach ($data as $item) {
+            $items[] = new Product($item->id, $item->name, $item->price, $item->category);
+        }
+
+        return $items;
+
+    }
+
 }

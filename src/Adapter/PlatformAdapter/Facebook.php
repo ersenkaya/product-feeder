@@ -10,7 +10,7 @@ class Facebook implements IPlatform
     /** @var array */
     private $items = array();
 
-    public function normalize(array $items)
+    public function normalize(array $items): array
     {
         /** @var Product $item */
         foreach ($items as $item) {
@@ -21,6 +21,8 @@ class Facebook implements IPlatform
                 'product_type' => $item->getCategory()
             );
        }
+
+        return $this->items;
     }
 
     public function getItems(): array
