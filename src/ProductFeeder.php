@@ -9,18 +9,12 @@ use ProductFeeder\Type\FileType;
 
 class ProductFeeder
 {
-    /** @var PlatformFactory */
-    private $platformFactory;
-
-    /** @var OutputFactory */
-    private $outputFactory;
 
     private $types = ['xml', 'json'];
 
     public function __construct()
     {
-        $this->platformFactory = new PlatformFactory();
-        $this->outputFactory = new OutputFactory();
+
     }
 
     /**
