@@ -22,7 +22,7 @@ After download projecti, in project root folder;
  - php -S localhost:8080 -t public/
 
 ```http
-  http://localhost:8080/?platform=facebook&output=xml&type=file
+  http://localhost:8080/?platform=facebook&output=xml
 ```
 
 #### Query Parameters
@@ -31,4 +31,22 @@ After download projecti, in project root folder;
 | :-------- | :------- | :------------------------- |
 | `platform` | `string` | **Gerekli**. facebook, google, cimri. |
 | `output` | `string` | **Gerekli**. xml, json. |
-| `type` | `string` | file |
+
+
+# To Generate json and xml file for feeders run at command line
+
+under public/
+
+> php exporter.php $platform $output
+
+$platform = google, facebook or cimri
+$output = json or xml
+
+ex: php exporter.php google xml
+
+You can see generated file in public/Feeds/$platform/$platform-feed.$output
+
+ex: public/facebook/facebook-feed.json
+
+
+
